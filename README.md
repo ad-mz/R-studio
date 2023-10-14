@@ -1,2 +1,3 @@
 # R-studio
-Checking out RStudio
+Checking out RStudio!
+

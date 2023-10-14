@@ -2,23 +2,36 @@
 title: "iris-dataset-analysis"
 author: "Adrian M"
 date: "2023-10-14"
-output: html_document
+output: github_document
 ---
+
+```{r}
+# install.packages("vctrs")
+# install.packages("tidyverse")
+# install.packages("ggplot2")
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
 ```
 
-```{r iris}
+Copying iris dataset to variable df
+
+```{r }
 df <- iris
 ```
 
-## Including Plots
+## Testing scatter plot
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(iris)
+```{r testPlot, echo=FALSE}
+ggplot(df, aes(Petal.Length, Petal.Width)) + geom_point()
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+head(df)
+```
+
