@@ -11,12 +11,12 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# ```{r}
+```{r}
 # install.packages("tidyverse")
 # install.packages("ggplot2")
 # library(tidyverse)
-# library(ggplot2)
-# ```
+library(ggplot2)
+```
 
 Copying iris data set to variable 'df'
 
@@ -141,7 +141,10 @@ This look too busy and unusable but I can move forward and explore ggplot furthe
 Try to see some relation between the measurements (petal, sepal, length and width) but this time, show the plots side by side using cowplot package
 
 install.packages("cowplot")
-library(cowplot
+
+```{r}
+library(cowplot)
+```
 
 ```{r}
 gg1 <- ggplot(df, aes(col = Species)) +
