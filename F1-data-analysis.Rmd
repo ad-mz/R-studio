@@ -1,0 +1,17 @@
+---
+title: "F1-data-analysis"
+author: "Adrian Manriza"
+date: "2023-10-15"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+install.packages("XML")
+
+```{r}
+library(XML2R)
+```
+

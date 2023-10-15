@@ -29,18 +29,19 @@ A quick view of the dataset
 ```{r}
 head(df)
 ```
+Trying univariate analysis and visualize this using qplot
 
 ?qplot
 
-Using qplot to show a bar plot, `fill` to color the bars. Check the number of records per Species
+Using qplot to show a plot. Check the number of records per Species
 
 ```{r}
 qplot(Species, 
-      fill = Species,
+      fill = Species, #to identify the color per species
       data = df)
 ```
 
-qplot automatically decides which plot to use based on supplied variables, looks like. 
+qplot automatically decides which plot to use based on supplied variables. 
 50 records per species.
 
 Trying qplot if it will show a scatterplot
@@ -66,6 +67,7 @@ So, going to try and explore ggplot instead
 ?ggplot
 
 ```{r}
+#add the base layer
 ggplot(data = df, 
        mapping = aes(x = Petal.Length, 
                      y = Petal.Width))
@@ -77,7 +79,7 @@ It's blank. Of course since the `aes()` or aesthetic is only present here. I nee
 ggplot(data = df, 
        mapping = aes(x = Petal.Length, 
                      y = Petal.Width)) +
-  geom_point()
+  geom_point() #scatterplot layer
 ```
 
 Pros: more control over what you want to display versus qplot which does it automatically.
@@ -88,14 +90,26 @@ Add some colors
 ggplot(df,
        aes(x = Petal.Length,
            y = Petal.Width,
-           col = Species)) +
+           col = Species)) + #color that helps identify by species
   geom_point()
 ```
 
-Maybe I can drop the `x=` and `y=` specifications too for the `aes()` method?
+Add a trend line since it's a scatterplot, to see the correlation better
+
+```{r}
+ggplot(df, 
+       aes(x = Petal.Length,
+           y = Petal.Width,
+           col = Species)) +
+  geom_point() + 
+  geom_smooth(method = lm) #add the trend line layer
+```
+
+All three species appears to have a positive correlation for Petal length & width shown by the trend line going upwards.
+
+I can drop the `x=` and `y=` specifications too for the `aes()` method.
 
 ?aes()
-help(aes)
 
 Also, ggplot uses layers so it can overlap multiple plots, from one dataset or more(!). I'll to move the `aes()` inside the `geom_point` layer and try some parameters
 
@@ -103,11 +117,25 @@ Also, ggplot uses layers so it can overlap multiple plots, from one dataset or m
 ggplot(df) +
   geom_point(aes(Petal.Length,
                  Petal.Width,
-                 col = Species,   #color by species 
+                 col = Species, #color by species 
                  shape = Species, #shape by species
-                 size = 3,       #size of datapoints
-                 stroke = 1))     #thickness of borders of datapoints, specific to geom_point
-                       
+                 size = 3, #size of datapoints
+                 stroke = 1, #thickness of borders of datapoints, specific to geom_point
+                 alpha = 0.7)) #transparency/opacity     
+```
+
+Using facet to separate
+
+?facet_wrap
+
+```{r}
+ggplot(df,
+       aes(Petal.Length,
+           Petal.Width,
+           col = Species)) +
+  geom_point() +
+  facet_wrap(Species ~.) + #separates by Species into own grids/plots
+  theme(legend.position = "bottom") #move the legend in the bottom
 ```
 
 Try to overlap two layers, petal and sepal 
@@ -124,16 +152,18 @@ ggplot(df) +
 
 I can't distinguish which is which. Maybe try to change the color per variable
 
+colors()
+
 ```{r}
 ggplot(df) +
   geom_point(aes(Petal.Length,
                  Petal.Width,
                  shape = Species), 
-             col = "Red") +        #put the col= argument outside aes()
+             col = "seagreen") +        #put the col= argument outside aes()
   geom_point(aes(Sepal.Length,
                  Sepal.Width,
                  shape = Species),
-             col = "Blue")
+             col = "royalblue")
 ```
 
 This look too busy and unusable but I can move forward and explore ggplot further.
@@ -254,9 +284,6 @@ ggplot(df,
   theme_minimal() +
   coord_flip()
 ```
-Some data points are clearly outside lines extending outwards the box but I cannot conclude that these are erroneous data. Since I cannot gather more information about these "outlier" measurements for this dataset, I will assume they are correct data for now. 
-This is also true for the rest of the box plots.
-
-~tbc..
+Some data points are clearly outside lines extending outwards the box but I cannot conclude that these are erroneous data. Since I cannot gather more information about these "outlier" measurements for this dataset, I will assume they are correct data for now and for the rest of the box plots.
 
 
