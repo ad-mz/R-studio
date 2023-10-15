@@ -22,18 +22,6 @@ Setting up the environment
 library(tidyverse)
 ```
 
-    ## Warning: package 'tidyverse' was built under R version 4.3.1
-
-    ## Warning: package 'tidyr' was built under R version 4.3.1
-
-    ## Warning: package 'purrr' was built under R version 4.3.1
-
-    ## Warning: package 'dplyr' was built under R version 4.3.1
-
-    ## Warning: package 'forcats' was built under R version 4.3.1
-
-    ## Warning: package 'lubridate' was built under R version 4.3.1
-
     ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
     ## ✔ dplyr     1.1.3     ✔ readr     2.1.4
     ## ✔ forcats   1.0.0     ✔ stringr   1.5.0
@@ -80,11 +68,6 @@ qplot(Species,
       fill = Species, #to identify the color per species
       data = df)
 ```
-
-    ## Warning: `qplot()` was deprecated in ggplot2 3.4.0.
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
@@ -302,8 +285,6 @@ install.packages(“cowplot”)
 library(cowplot)
 ```
 
-    ## Warning: package 'cowplot' was built under R version 4.3.1
-
     ## 
     ## Attaching package: 'cowplot'
 
@@ -363,16 +344,6 @@ create_histogram <- function(data, column_name, num_bins = 25) #create the funct
 ``` r
 #Running the function, supplying the appropriate parameters, then storing each plot to a corresponding variable
 hist_petal_length <- create_histogram(df, "Petal.Length")
-```
-
-    ## Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
-    ## ℹ Please use tidy evaluation idioms with `aes()`.
-    ## ℹ See also `vignette("ggplot2-in-packages")` for more information.
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
-
-``` r
 hist_petal_width <- create_histogram(df, "Petal.Width")
 hist_sepal_length <- create_histogram(df, "Sepal.Length")
 hist_sepal_width <- create_histogram(df, "Sepal.Width")
@@ -407,12 +378,6 @@ ggplot(df) +
                    col = Species),
                size = 1.2)
 ```
-
-    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-    ## ℹ Please use `linewidth` instead.
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 Identifying the species by colors confirms that the gap is because of
