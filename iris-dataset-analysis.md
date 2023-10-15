@@ -3,10 +3,49 @@ iris-dataset-analysis
 Adrian M
 2023-10-14
 
+# Introduction
+
+Edgar Anderson’s Iris Data
+
+This famous (Fisher’s or Anderson’s) iris data set gives the
+measurements in centimeters of the variables sepal length and width and
+petal length and width, respectively, for 50 flowers from each of 3
+species of iris. The species are Iris setosa, versicolor, and virginica.
+
+Setting up the environment
+
+?iris
+
 ``` r
 # install.packages("tidyverse")
 # install.packages("ggplot2")
-# library(tidyverse)
+library(tidyverse)
+```
+
+    ## Warning: package 'tidyverse' was built under R version 4.3.1
+
+    ## Warning: package 'tidyr' was built under R version 4.3.1
+
+    ## Warning: package 'purrr' was built under R version 4.3.1
+
+    ## Warning: package 'dplyr' was built under R version 4.3.1
+
+    ## Warning: package 'forcats' was built under R version 4.3.1
+
+    ## Warning: package 'lubridate' was built under R version 4.3.1
+
+    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ## ✔ dplyr     1.1.3     ✔ readr     2.1.4
+    ## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+    ## ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+    ## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+    ## ✔ purrr     1.0.2     
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+``` r
 library(ggplot2)
 ```
 
@@ -30,11 +69,11 @@ head(df)
     ## 5          5.0         3.6          1.4         0.2  setosa
     ## 6          5.4         3.9          1.7         0.4  setosa
 
-Trying univariate analysis and visualize this using qplot
+Trying some univariate analysis and visualize this using `qplot`
 
 ?qplot
 
-Using qplot to show a plot. Check the number of records per Species
+Using `qplot` to show a plot. Check the number of records per Species
 
 ``` r
 qplot(Species, 
@@ -49,10 +88,11 @@ qplot(Species,
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
-qplot automatically decides which plot to use based on supplied
-variables. 50 records per species.
+`qplot` automatically decides which plot to use based on supplied
+variables. 50 records per species as the data set introduction
+described.
 
-Trying qplot if it will show a scatterplot
+Trying `qplot` to show a scatterplot
 
 ``` r
 qplot(Petal.Length, 
@@ -62,7 +102,7 @@ qplot(Petal.Length,
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-Add some colors by Species
+Adding some colors by Species
 
 ``` r
 qplot(Petal.Length, 
@@ -73,8 +113,9 @@ qplot(Petal.Length,
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-Looks good but documentation says qplot is deprecated (no longer useful
-or better options exist) So, going to try and explore ggplot instead
+Looks good but documentation says `qplot` is deprecated (no longer
+useful or better options exist) In this case, I’m going to try and
+explore ggplot instead
 
 ?ggplot
 
@@ -86,9 +127,9 @@ ggplot(data = df,
 ```
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
-
-It’s blank. Of course since the `aes()` or aesthetic is only present
-here. I need to specify which type of plot to use (unlike qplot?)
+It’s blank. Of course since the only the `aes()` or the aesthetic is
+present here. I need to add more layers and specify which type of plot
+to use.
 
 ``` r
 ggplot(data = df, 
@@ -99,10 +140,14 @@ ggplot(data = df,
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-Pros: more control over what you want to display versus qplot which does
-it automatically. Also, it says we can drop the specifications for the
-`data=` and `mapping=` arguments as long as we supply the correct
-arguments in the correct order. Nice. Add some colors
+`ggplot` allows for better control over what you want to display versus
+`qplot`.
+
+Also, it says we can drop the specifications for the `data=` and
+`mapping=` arguments as long as we supply the correct arguments in the
+correct order. Nice.
+
+Adding some colors
 
 ``` r
 ggplot(df,
@@ -113,8 +158,8 @@ ggplot(df,
 ```
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
-
-Add a trend line since it’s a scatterplot, to see the correlation better
+Adding a trend line since it’s a scatterplot, to see the correlation
+better.
 
 ``` r
 ggplot(df, 
@@ -128,17 +173,17 @@ ggplot(df,
     ## `geom_smooth()` using formula = 'y ~ x'
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
-
 All three species appears to have a positive correlation for Petal
 length & width shown by the trend line going upwards.
 
-I can drop the `x=` and `y=` specifications too for the `aes()` method.
+I can drop the `x=` and `y=` specifications too for the `aes()` method!
 
 ?aes()
 
 Also, ggplot uses layers so it can overlap multiple plots, from one
-dataset or more(!). I’ll to move the `aes()` inside the `geom_point`
-layer and try some parameters
+dataset, or more! I’ll move the `aes()` inside the `geom_point` layer
+which indicates that the data points will onlky be affected by the
+parameters we add in this `geom_point` layer and try some parameters
 
 ``` r
 ggplot(df) +
@@ -152,7 +197,6 @@ ggplot(df) +
 ```
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-
 Using facet to separate
 
 ?facet_wrap
@@ -168,8 +212,31 @@ ggplot(df,
 ```
 
 ![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+There is so much unused space in the plots so I will try to scale each
+plot to fit the datapoints inside the plot and see what it looks like.
 
-Try to overlap two layers, petal and sepal
+``` r
+ggplot(df,
+       aes(Petal.Length,
+           Petal.Width,
+           col = Species)) +
+  geom_point() +
+  facet_wrap(Species ~ .,
+             scales = "free") + #this will scale down the x and y values to fit the datapoints in the plot
+  geom_smooth(method = lm) +
+  theme(legend.position = "bottom")
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+It looks zoomed-in and clearer but I think the trade-off here is that,
+it will be harder to make quick comparisons since you will constantly
+need to look at the values in the x and y axes to interpret the data
+correctly.
+
+Next, I will try to overlap two layers, length and width measurements of
+petal and sepal
 
 ``` r
 ggplot(df) +
@@ -178,32 +245,52 @@ ggplot(df) +
              col = Species)) +
   geom_point(aes(Sepal.Length,
              Sepal.Width,
-             col = Species))
+             col = Species)) +
+#I need to change the x and y labels since we are dealing now with 2 different variables (Petal and Sepal)
+  labs(title = "Petal and Sepal",
+       subtitle = "Length and Width",
+       x = "Length", 
+       y = "Width")
 ```
 
-![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
-
+![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 I can’t distinguish which is which. Maybe try to change the color per
 variable
 
 colors()
 
 ``` r
-ggplot(df) +
+ggplot(df, aes(col = Species)) +
   geom_point(aes(Petal.Length,
                  Petal.Width,
-                 shape = Species), 
-             col = "seagreen") +        #put the col= argument outside aes()
+                 shape = "Petal"),
+             alpha = 0.5) +
+  geom_smooth(aes(Petal.Length,
+                  Petal.Width), 
+              method = lm,
+              alpha = 0.5) +
   geom_point(aes(Sepal.Length,
                  Sepal.Width,
-                 shape = Species),
-             col = "royalblue")
+                 shape = "Sepal"),
+             alpha = 0.5) +
+  geom_smooth(aes(Sepal.Length,
+                  Sepal.Width),
+              method = lm,
+              alpha = 0.5) +
+  labs(title = "Petal and Sepal",
+       subtitle = "Length and Width",
+       x = "Length", 
+       y = "Width")
 ```
 
-![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+    ## `geom_smooth()` using formula = 'y ~ x'
+    ## `geom_smooth()` using formula = 'y ~ x'
 
-This look too busy and unusable but I can move forward and explore
-ggplot further.
+![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+This looks a little too busy but it appears that there is a positive
+correlation.
+
+I can move forward and explore ggplot further.
 
 Try to see some relation between the measurements (petal, sepal, length
 and width) but this time, show the plots side by side using cowplot
@@ -217,30 +304,48 @@ library(cowplot)
 
     ## Warning: package 'cowplot' was built under R version 4.3.1
 
+    ## 
+    ## Attaching package: 'cowplot'
+
+    ## The following object is masked from 'package:lubridate':
+    ## 
+    ##     stamp
+
 ``` r
 gg1 <- ggplot(df, aes(col = Species)) +
   geom_point(aes(Petal.Length,
                  Petal.Width), 
              size = 2, 
              alpha = 0.7,
-             show.legend = FALSE)
+             show.legend = FALSE) +
+  geom_smooth(aes(Petal.Length,
+                  Petal.Width),
+              method = lm)
 
 gg2 <- ggplot(df, aes(col = Species)) +
   geom_point(aes(Sepal.Length,
                  Sepal.Width), 
              size = 2, 
              alpha = 0.7) +
+  geom_smooth(aes(Sepal.Length,
+                  Sepal.Width),
+              method = lm) +
   theme(legend.position = "top",
         legend.title = element_blank())
 
 plot_grid(gg1, gg2, ncol = 2) #from cowplot
 ```
 
-![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+    ## `geom_smooth()` using formula = 'y ~ x'
+    ## `geom_smooth()` using formula = 'y ~ x'
 
-Looks crowded but I can see here that Petal Length & Width have positive
-correlation while Sepal length & width have positive correlation only
-with setosa
+![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+Looks better and clearer compared to overlapped data.
+
+I can see here that Petal Length & Width have strong positive
+correlation while Sepal length & width have strong positive correlation
+only with setosa and somewhat positive correlation for the versicolor
+and virginica.
 
 OK I’m going to try histogram plots. Some basic plots to see the
 distribution of all the measurements
@@ -253,7 +358,9 @@ create_histogram <- function(data, column_name, num_bins = 25) #create the funct
                  bins = num_bins,
                  alpha = 0.7) + #flexibility in number of histogram bins
   theme_minimal() #makes all plots consistent
+```
 
+``` r
 #Running the function, supplying the appropriate parameters, then storing each plot to a corresponding variable
 hist_petal_length <- create_histogram(df, "Petal.Length")
 ```
@@ -279,7 +386,7 @@ plot_grid(hist_petal_length,
           nrow = 2)
 ```
 
-![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 The petal length & width appears to have a gap in a certain section of
 the distribution. The group on the left could be the setosa, similar to
 the gaps on the previous scatterplots. The sepal length is spread across
@@ -307,7 +414,7 @@ ggplot(df) +
     ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
     ## generated.
 
-![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 Identifying the species by colors confirms that the gap is because of
 the iris specie setosa
 
@@ -340,7 +447,7 @@ plot_grid(gg_boxp_petalL,
           nrow = 2)
 ```
 
-![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 It looks normally distributed but there are possible outliers. Taking at
 closer look at Sepal width
 
@@ -357,7 +464,7 @@ ggplot(df,
   coord_flip()
 ```
 
-![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](iris-dataset-analysis_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 Some data points are clearly outside lines extending outwards the box
 but I cannot conclude that these are erroneous data. Since I cannot
 gather more information about these “outlier” measurements for this
