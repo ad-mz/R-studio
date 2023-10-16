@@ -97,12 +97,7 @@ hc <- dfcars %>%
 Plotting dendogram
 
 ``` r
-dev.hold() #keep the graphics device open
-```
-
-    ## [1] 0
-
-``` r
+invisible(dev.hold()) #keep the graphics device open
 #plot the car names
 hc %>% plot(labels = dfcars$car, 
            cex = 0.8, #label size
@@ -116,7 +111,5 @@ hc %>% rect.hclust(k = 5, #k = number of groups
 ![](mtcars-data-anaysis_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
-dev.flush() #close the graphics device
+invisible(dev.flush()) #close the graphics device
 ```
-
-    ## [1] 0
