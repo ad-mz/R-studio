@@ -1,0 +1,70 @@
+---
+title: "mtcars-data-anaysis"
+author: "Adrian Manriza"
+date: "2023-10-16"
+output: github_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Introduction
+
+Motor Trend Car Road Tests
+
+The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+pacman::p_load(tidyverse, ggplot2)
+```
+
+Looking at the dataset
+
+```{r}
+head(mtcars)
+```
+
+```{r}
+summary(mtcars)
+```
+
+First, I want to try cluster analysis.
+
+Clustering, meaning to group (or cluster) similar items together based on their characteristics. 
+The goal is to partition a dataset into groups, or clusters, where items in the same group are more similar to each other than to those in other groups.
+
+Preparing data for hierarchical cluster
+
+```{r}
+dfcars <- mtcars %>%
+  rownames_to_column() %>% #add a column name instead of a rowname to car names
+  as_tibble() %>% #save as tibble
+  select(car = rowname, mpg:hp, wt, qsec, gear, carb) %>% #choosing specific columns
+  mutate_at(vars(-car), scale) %>% #make all <dlb> type columns have same scale using z-score
+  print()
+```
+
+Calculating
+
+```{r}
+hc <- dfcars %>%
+  dist %>% #distance
+  hclust #agglomerative, analyze single then group
+```
+
+Plotting dendogram
+
+```{r}
+dev.hold() #keep the graphics device open
+#plot the car names
+hc %>% plot(labels = dfcars$car, 
+           cex = 0.8, #label size
+           hang = -1) #bottom alignment
+
+#draw boxes
+hc %>% rect.hclust(k = 5, #k = number of groups
+                   border = 2:6) #border color, colors 2-6 from color palette
+dev.flush() #close the graphics device
+```
+

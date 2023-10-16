@@ -21,7 +21,7 @@ Setting up the environment
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
-```{r}
+```{r, message = false}
 # install.packages("tidyverse")
 # install.packages("ggplot2")
 library(tidyverse)
@@ -39,19 +39,27 @@ A quick view of the dataset
 ```{r}
 head(df)
 ```
+
+A quick summary
+
+```{r}
+summary(df)
+```
+
 Trying some univariate analysis and visualize this using `qplot`
 
 ?qplot
 
-Using `qplot` to show a plot. Check the number of records per Species
+Using `qplot` to show a plot. 
+Check the number of records per Species
 
-```{r}
+```{r, message=FALSE}
 qplot(Species, 
       fill = Species, #to identify the color per species
       data = df)
 ```
 
-`qplot` automatically decides which plot to use based on supplied variables. 
+`qplot` decided which plot to use based on supplied variables. 
 50 records per species as the data set introduction described.
 
 Trying `qplot` to show a scatterplot
@@ -82,7 +90,8 @@ ggplot(data = df,
        mapping = aes(x = Petal.Length, 
                      y = Petal.Width))
 ```
-It's blank. Of course since the only the `aes()` or the aesthetic is present here. I need to add more layers and specify which type of plot to use.
+
+It's blank. Of course, since the only the `aes()` or the aesthetic is present here. I need to add more layers and specify which type of plot to use.
 
 ```{r}
 ggplot(data = df, 
@@ -93,7 +102,7 @@ ggplot(data = df,
 
 `ggplot` allows for better control over what you want to display versus `qplot`.
 
-Also, it says we can drop the specifications for the `data=` and `mapping=` arguments as long as we supply the correct arguments in the correct order. Nice. 
+On a different note, documentation says we can drop the specifications for the `data=` and `mapping=` arguments as long as we supply the correct arguments in the correct order which is nice. 
 
 Adding some colors
 
@@ -104,6 +113,7 @@ ggplot(df,
            col = Species)) + #color that helps identify by species
   geom_point()
 ```
+
 Adding a trend line since it's a scatterplot, to see the correlation better.
 
 ```{r}
@@ -114,6 +124,7 @@ ggplot(df,
   geom_point() + 
   geom_smooth(method = lm) #add the trend line layer
 ```
+
 All three species appears to have a positive correlation for Petal length & width shown by the trend line going upwards.
 
 I can drop the `x=` and `y=` specifications too for the `aes()` method!
@@ -132,6 +143,7 @@ ggplot(df) +
                  stroke = 1, #thickness of borders of datapoints, specific to geom_point
                  alpha = 0.7)) #transparency/opacity     
 ```
+
 Using facet to separate
 
 ?facet_wrap
@@ -145,6 +157,7 @@ ggplot(df,
   facet_wrap(Species ~.) + #separates by Species into own grids/plots
   theme(legend.position = "bottom") #move the legend in the bottom
 ```
+
 There is so much unused space in the plots so I will try to scale each plot to fit the datapoints inside the plot and see what it looks like.
 
 ```{r}
@@ -158,6 +171,7 @@ ggplot(df,
   geom_smooth(method = lm) +
   theme(legend.position = "bottom")
 ```
+
 It looks zoomed-in and clearer but I think the trade-off here is that, it will be harder to make quick comparisons since you will constantly need to look at the values in the x and y axes to interpret the data correctly.
 
 Next, I will try to overlap two layers, length and width measurements of petal and sepal 
@@ -176,7 +190,9 @@ ggplot(df) +
        x = "Length", 
        y = "Width")
 ```
-I can't distinguish which is which. Maybe try to change the color per variable
+
+I can't distinguish which one is the petal and which one is the sepal. 
+Change the color per variable:
 
 colors()
 
@@ -203,7 +219,8 @@ ggplot(df, aes(col = Species)) +
        x = "Length", 
        y = "Width")
 ```
-This looks a little too busy but it appears that there is a positive correlation.  
+
+This looks a little too busy and difficult to interpret overlapping data but it appears that there is a positive correlation.  
 
 I can move forward and explore ggplot further.
 
@@ -211,11 +228,11 @@ Try to see some relation between the measurements (petal, sepal, length and widt
 
 install.packages("cowplot")
 
-```{r}
+```{r, mesage = FALSE}
 library(cowplot)
 ```
 
-```{r}
+```{r, message = FALSE}
 gg1 <- ggplot(df, aes(col = Species)) +
   geom_point(aes(Petal.Length,
                  Petal.Width), 
@@ -237,8 +254,10 @@ gg2 <- ggplot(df, aes(col = Species)) +
   theme(legend.position = "top",
         legend.title = element_blank())
 
-plot_grid(gg1, gg2, ncol = 2) #from cowplot
+#from cowplot
+plot_grid(gg1, gg2, ncol = 2) 
 ```
+
 Looks better and clearer compared to overlapped data.
 
 I can see here that Petal Length & Width have strong positive correlation while Sepal length & width have strong positive correlation only with setosa and somewhat positive correlation for the versicolor and virginica.
@@ -248,7 +267,8 @@ Some basic plots to see the distribution of all the measurements
 
 ```{r}
 #I made a function since this will repeat 4 times (petal & sepal, width & length)
-create_histogram <- function(data, column_name, num_bins = 25) #create the function along with the accepted parameters
+create_histogram <- function(data, column_name, num_bins = 25) 
+  #create the function along with the accepted parameters
   ggplot(data) +
   geom_histogram(aes_string(column_name), 
                  bins = num_bins,
@@ -271,12 +291,13 @@ plot_grid(hist_petal_length,
           ncol = 2, 
           nrow = 2)
 ```
+
 The petal length & width appears to have a gap in a certain section of the distribution. The group on the left could be the setosa, similar to the gaps on the previous scatterplots. 
 The sepal length is spread across the measurements but the width looks to have a central tendency towards "3"
 
 I'll take a closer look at petals using overlapping density plot
 
-```{r}
+```{r, message = FALSE}
 ggplot(df) +
   geom_histogram(aes(x = Petal.Length,
                    y = after_stat(density),
@@ -288,6 +309,7 @@ ggplot(df) +
                    col = Species),
                size = 1.2)
 ```
+
 Identifying the species by colors confirms that the gap is because of the iris specie setosa
 
 Can we try using box plots to explore this dataset more?
@@ -318,6 +340,7 @@ plot_grid(gg_boxp_petalL,
           ncol = 2,
           nrow = 2)
 ```
+
 It looks normally distributed but there are possible outliers. Taking at closer look at Sepal width
 
 ```{r}
@@ -332,6 +355,5 @@ ggplot(df,
   theme_minimal() +
   coord_flip()
 ```
+
 Some data points are clearly outside lines extending outwards the box but I cannot conclude that these are erroneous data. Since I cannot gather more information about these "outlier" measurements for this dataset, I will assume they are correct data for now and for the rest of the box plots.
-
-
