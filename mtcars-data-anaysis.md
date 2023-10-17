@@ -92,24 +92,21 @@ hc <- dfcars %>%
   hclust #agglomerative, analyze single then group
 ```
 
-    ## Warning in dist(.): NAs introduced by coercion
-
 Plotting dendogram
 
 ``` r
-invisible(dev.hold()) #keep the graphics device open
 #plot the car names
 hc %>% plot(labels = dfcars$car, 
            cex = 0.8, #label size
            hang = -1) #bottom alignment
+```
 
+![](mtcars-data-anaysis_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
 #draw boxes
 hc %>% rect.hclust(k = 5, #k = number of groups
                    border = 2:6) #border color, colors 2-6 from color palette
 ```
 
-![](mtcars-data-anaysis_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-``` r
-invisible(dev.flush()) #close the graphics device
-```
+![](mtcars-data-anaysis_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->

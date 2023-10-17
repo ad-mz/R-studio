@@ -47,7 +47,7 @@ dfcars <- mtcars %>%
 
 Calculating
 
-```{r}
+```{r, warning=FALSE}
 hc <- dfcars %>%
   dist %>% #distance
   hclust #agglomerative, analyze single then group
@@ -55,8 +55,11 @@ hc <- dfcars %>%
 
 Plotting dendogram
 
-```{r}
-invisible(dev.hold()) #keep the graphics device open
+```{r, include=FALSE}
+dev.hold()
+```
+
+```{r, fig.keep='hold'}
 #plot the car names
 hc %>% plot(labels = dfcars$car, 
            cex = 0.8, #label size
@@ -65,6 +68,9 @@ hc %>% plot(labels = dfcars$car,
 #draw boxes
 hc %>% rect.hclust(k = 5, #k = number of groups
                    border = 2:6) #border color, colors 2-6 from color palette
-invisible(dev.flush()) #close the graphics device
+```
+
+```{r, include=FALSE}
+dev.flush()
 ```
 
