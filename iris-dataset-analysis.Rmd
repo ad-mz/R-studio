@@ -4,7 +4,7 @@ author: "Adrian M"
 date: "2023-10-14"
 output: github_document
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 # Introduction
@@ -22,10 +22,8 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
 ```{r, message = false}
-# install.packages("tidyverse")
-# install.packages("ggplot2")
-library(tidyverse)
-library(ggplot2)
+#if (!require(pacman)) install.packages(pacman)
+pacman::p_load(pacman, rio, tidyverse, ggplot)
 ```
 
 Copying iris data set to variable 'df'
@@ -262,6 +260,16 @@ Looks better and clearer compared to overlapped data.
 
 I can see here that Petal Length & Width have strong positive correlation while Sepal length & width have strong positive correlation only with setosa and somewhat positive correlation for the versicolor and virginica.
 
+Trying out density plots over scatter plots to see areas of concentration.
+
+```{r}
+ggplot(df,
+       aes(Petal.Length,
+           Petal.Width)) +
+  geom_point(aes(color= Species)) +
+  geom_density_2d()
+```
+
 OK I'm going to try histogram plots. 
 Some basic plots to see the distribution of all the measurements
 
@@ -357,3 +365,4 @@ ggplot(df,
 ```
 
 Some data points are clearly outside lines extending outwards the box but I cannot conclude that these are erroneous data. Since I cannot gather more information about these "outlier" measurements for this dataset, I will assume they are correct data for now and for the rest of the box plots.
+
